@@ -8,12 +8,13 @@ typedef struct Dict{
     char ja[32];
 } Dict;
 
-Dict words[256];
+Dict words[100];
 
 int main(int argc, char *argv[]) {
     FILE *fp;
     char *fname = "en-ja.csv";
-    int i, ret;
+    char temp[32];
+    int i = 0;
 
     fp = fopen(fname, "r");
 
@@ -21,12 +22,29 @@ int main(int argc, char *argv[]) {
         printf("%s does not exist.\n", fname);
         return -1;
     } else {
-        printf("%s file has opened\n", fname);
+        printf("%s has opened.\n\n\n", fname);
     }
 
-    fscanf(fp, "%[^,],%s", &words[0].en, &words[0].ja);
-    fclose(fp);
-    printf("%s %s\n",  words[0].en, words[0].ja);
+    for (i=0; i < 32; i++) {
+        fscanf(fp, "%[^,],%s", &words[i].en, &words[i].ja);
+    }
 
+
+    // do {
+    //     fscanf(fp, "%[^,],%s", &words[i].en, &words[i].ja);
+    //     i++;
+    // } while (strlen(words[i].en) == 0);
+
+
+    printf("[%s] [%s]\n\n", words[24].en, words[24].ja);
+
+
+    i = 0;
+    while (strlen(words[i].en) != 0) {
+        printf("%s %s", words[i].en, words[i].ja);
+        i++;
+    }
+    
+    fclose(fp);
     return (0);
 }
