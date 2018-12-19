@@ -5,12 +5,12 @@
 英単語クイズのソフトウェアをC言語で開発する。
 
 ## 参考URL
-https://qiita.com/oh-thevenin/items/6cbdd5081a4b31e41127
-https://www.clipper.co.jp/pg-2-36.html
-http://simd.jugem.jp/?eid=49
-https://cboard.cprogramming.com/c-programming/161380-reading-values-csv-file-c-into-array.html
-https://mementoo.info/archives/713  
-https://algorithm.joho.info/programming/c-load-csv/  
+* https://qiita.com/oh-thevenin/items/6cbdd5081a4b31e41127  
+* https://www.clipper.co.jp/pg-2-36.html  
+* http://simd.jugem.jp/?eid=49  
+* https://cboard.cprogramming.com/c-programming/161380-reading-values-csv-file-c-into-array.html  
+* https://mementoo.info/archives/713  
+* https://algorithm.joho.info/programming/c-load-csv/  
 
 
 ## Todo
