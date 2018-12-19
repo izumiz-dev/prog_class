@@ -1,42 +1,32 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX 1024
 
-FILE *filePointer;
+typedef struct Dict{
+    char en[32];
+    char ja[32];
+} Dict;
+
+Dict words[256];
 
 int main(int argc, char *argv[]) {
+    FILE *fp;
+    char *fname = "en-ja.csv";
+    int i, ret;
 
-    char *fileName = "en-ja.csv";
-    char enDict[100][100];
-    char jaDict[100][100];  //.csvから読み込んだ単語の配列
-    int i;
+    fp = fopen(fname, "r");
 
-    filePointer = fopen(fileName, "r");
-    if (filePointer == NULL) {
-        printf("%s does not exist.\n", fileName);
-        return 8;
+    if (fp == NULL) {
+        printf("%s does not exist.\n", fname);
+        return -1;
+    } else {
+        printf("%s file has opened\n", fname);
     }
 
-    // while　(( ret = fscanf(filePointer, "%[^,],%s", &dict[1] ) ) != EOF )　{
-    //     printf( "%s %d %d %f %f", s, n1, n2, f1, f2 );
-    // }
-
-    for (i = 0; i < 100; i++) {
-        if (fscanf(filePointer, "%[^,],%s", &enDict[i], &jaDict[i]) != EOF) {
-            break;
-        } else {
-            fscanf(filePointer, "%[^,],%s", &enDict[i], &jaDict[i]);
-        }
-    }
-
-    for (i = 0; i < 100; i++) {
-        // if (fscanf(filePointer, "%s,%s", &dict[i][0], &dict[i][1]) != EOF) {
-        //     break;
-        // } else {
-        //     printf("%s %s\n", &dict[i][0], &dict[i][1]);
-        // }
-        printf("%s %s\n", enDict[i], jaDict[i]);
-    }
-
-    fclose(filePointer);
+    fscanf(fp, "%[^,],%s", &words[0].en, &words[0].ja);
+    fclose(fp);
+    printf("%s %s\n",  words[0].en, words[0].ja);
 
     return (0);
 }
