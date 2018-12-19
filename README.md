@@ -11,6 +11,8 @@
 * https://cboard.cprogramming.com/c-programming/161380-reading-values-csv-file-c-into-array.html  
 * https://mementoo.info/archives/713  
 * https://algorithm.joho.info/programming/c-load-csv/  
+* http://eienlearner.seesaa.net/article/434238562.html  
+
 
 
 ## Todo
