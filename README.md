@@ -14,10 +14,3 @@
 * http://eienlearner.seesaa.net/article/434238562.html  
 * http://marycore.jp/prog/objective-c/sleep-process/
 * http://www.c-lang.org/detail/stdbool_h.html
-
-
-## Todo
-
-- [x] csvから読み込んだ単語を配列に入れる
-- [x] 読み込んだ配列を`printf`で出力できるようにする
-- [ ] For文でCSVファイルを全部読み込む
