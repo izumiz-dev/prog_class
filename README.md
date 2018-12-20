@@ -12,7 +12,8 @@
 * https://mementoo.info/archives/713  
 * https://algorithm.joho.info/programming/c-load-csv/  
 * http://eienlearner.seesaa.net/article/434238562.html  
-
+* http://marycore.jp/prog/objective-c/sleep-process/
+* http://www.c-lang.org/detail/stdbool_h.html
 
 
 ## Todo
