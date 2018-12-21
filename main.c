@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include <windows.h>
 
 typedef struct Dict{
@@ -13,8 +12,8 @@ Dict words[100];
 
 
 void viewDict(void);
-int readDict(char *);
-void loadingBar(void);
+void readDict(char *);
+void progressBar(void);
 
 int main(int argc, char *argv[]) {
 
@@ -25,7 +24,7 @@ int main(int argc, char *argv[]) {
         printf("Load %s\n", argv[1]);
         readDict(argv[1]);
     }
-
+    viewDict();
     int i = 0;
     return (0);
 }
@@ -42,7 +41,7 @@ void viewDict(void) {
 }
 
 
-int readDict(char *inputFile) {
+void readDict(char *inputFile) {
     // csvの読み込みを行うサブルーチン
     int i = 0;
     FILE *fp;
@@ -51,11 +50,9 @@ int readDict(char *inputFile) {
 
     if (fp == NULL) {
         printf("%s does not exist.\n", fname);
-        return(false);
     } else {
-        loadingBar();
+        progressBar();
         printf("File load complete!!\n");
-        return(true);
     }
     
     while (1) {
@@ -67,7 +64,7 @@ int readDict(char *inputFile) {
     fclose(fp);
 }
 
-void loadingBar(void) {
+void progressBar(void) {
     Sleep(500);
     int i = 0;
     for (i = 0; i < 60; i++) {
