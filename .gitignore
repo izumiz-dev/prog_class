@@ -2,3 +2,4 @@
 *.obj
 git rm --cached <main.exe>
 git rm --cached <main.obj>
+.vscode/settings.json
