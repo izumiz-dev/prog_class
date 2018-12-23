@@ -14,3 +14,4 @@
 * http://eienlearner.seesaa.net/article/434238562.html  
 * http://marycore.jp/prog/objective-c/sleep-process/
 * http://www.c-lang.org/detail/stdbool_h.html
+* https://stackoverflow.com/questions/822323/how-to-generate-a-random-int-in-c
