@@ -15,3 +15,6 @@
 * http://marycore.jp/prog/objective-c/sleep-process/
 * http://www.c-lang.org/detail/stdbool_h.html
 * https://stackoverflow.com/questions/822323/how-to-generate-a-random-int-in-c
+* https://stackoverflow.com/questions/42096987/reading-csv-file-into-a-struct-thats-included-from-header
+* https://stackoverflow.com/questions/47044105/read-data-from-csv-into-struct-array
+* http://goldilocks-engineering.blogspot.com/2015/09/c.html
