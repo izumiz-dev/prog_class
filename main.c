@@ -18,7 +18,6 @@ void progressBar(void);
 void setQuestions(void);
 void ansQuestions(int);
 
-
 int main(int argc, char *argv[]) {
 
     srand((unsigned)time(NULL));
@@ -37,20 +36,16 @@ int main(int argc, char *argv[]) {
 
 
 void viewDict(void) {
-    // 読み込んだ.csvの内容をprintfするサブルーチン 
     int i = 0;
-    printf("\n\n##########  単語一覧 %d個  ##########\n", dictCnt);
     while (strlen(words[i].en) != 0) {
         printf("%s %s", words[i].en, words[i].ja);
         Sleep(20);
         i++;
     }
-    printf("\n終了\n");
 }
 
 
 void readDict(char *inputFile) {
-    // csvの読み込みを行うサブルーチン
     int i = 0;
     FILE *fp;
     char *fname = inputFile;
@@ -86,12 +81,36 @@ void progressBar(void) {
 }
 
 void setQuestions(void) {
+    char buff[255];
+    char ansStr[255];
     int r = rand() % dictCnt;
-    printf("Question %10s \n", words[r].ja);
+    int i;
+    int isCorrect; // 0:Correct, else: Incorrect
     
-    ansQuestions(r);
-}
+    strcpy(ansStr, words[r].en);
+    for (i = 0; i < strlen(ansStr); i++) {
+        ansStr[i] = ansStr[i+1];
+    }
 
+    // printf("[ansStr string check:%s]\n", ansStr);
+
+    printf("Enter an English word in this meaning: %10s \n", words[r].ja);
+    printf("\ninput>>> ");
+    fgets(buff, sizeof(buff), stdin);
+    for (i = 0; i < strlen(buff); i++) {
+        if (buff[i] == '\n') {
+            buff[i] = '\0';
+        }
+    }
+    isCorrect = strcmp(buff, ansStr);
+    if (isCorrect == 0) {
+        printf("Correct Answer!!\n");
+    } else {
+        printf("Wrong Ansewer\n");
+    }
+} 
+
+/*
 void ansQuestions(int correctVal) {
     int choice[4], i;
     int indexCorrVal = rand() % 4;
@@ -107,3 +126,4 @@ void ansQuestions(int correctVal) {
     }
     printf("1:[%s] 2:[%s] 3:[%s] 4:[%s]", words[choice[0]].en, words[choice[1]].en, words[choice[2]].en, words[choice[3]].en);
 }
+*/
