@@ -18,3 +18,6 @@
 * https://stackoverflow.com/questions/42096987/reading-csv-file-into-a-struct-thats-included-from-header
 * https://stackoverflow.com/questions/47044105/read-data-from-csv-into-struct-array
 * http://goldilocks-engineering.blogspot.com/2015/09/c.html
+* http://www.orchid.co.jp/computer/cschool/CREF/strcmp.html
+* http://www.grapecity.com/developer/support/powernews/column/clang/030/page04.htm
+* http://www.orchid.co.jp/computer/cschool/CREF/gets.html
