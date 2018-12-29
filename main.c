@@ -30,7 +30,7 @@ void readDict(char *);
 void progressBar(void);
 int setQuestions(int);
 void showResult(void);
-
+void informTips(void);
 int main(int argc, char *argv[])
 {
     int i = 0;
@@ -60,9 +60,9 @@ menu:
     choice = atoi(buff);
     switch (choice) {
         case 1:
+            informTips();
             printf("See you!\n");
             return (0);
-            break;
         case 2:
             goto quiz;
             break;
@@ -233,4 +233,16 @@ void showResult(void) {
     }
 
     printf("\n\n");
+}
+
+void informTips(void) {
+    int num = rand() % 2;
+    switch (num) {
+        case 0:
+            printf("Tips: ");
+            printf("起動時に自分で用意した.csvファイルを読み込ますことができるよ！[main.exe .csv]\n");
+            break;
+        default:
+            break;
+    }
 }
