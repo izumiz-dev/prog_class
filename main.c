@@ -1,10 +1,13 @@
-/****************************************************
- * main.c
+/**********************************************************************
+ * 英単語クイズゲーム
+ * https://github.com/polyiz/prog_class
+ * ユーザの用意した.csvやデフォルトで読み込まれる.csvを使った英単語のクイズ
+ * ができるソフトウェア。Windowsのコマンドプロンプト上で動く。
  * 
  * 変数名 snake_case
  * 関数名は camelCase
  * インデント space 4文字
- ****************************************************/
+ **********************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,14 +30,12 @@ int results[MAX_VALUE];
 
 WORD Attributes = 0;
 
-void displayWords(void);
-void readDict(char *);
-void progressBar(void);
-int setQuestions(int);
-void showResult(void);
-void informTips(void);
-void setConsoleColor(WORD* Attributes, DWORD Color);
-void resetConsoleColor(WORD Attributes);
+void displayWords(void);    // csvから読み込んだデータ一覧を表示
+void readDict(char *);      // csvを読込み、構造体配列に代入を行う
+int setQuestions(int);      // クイズの出題,正解の判定を行う
+void showResult(void);      // クイズの結果,不正解の一覧を表示する
+void setConsoleColor(WORD* Attributes, DWORD Color);    // 文字に色を付けるための関数
+void resetConsoleColor(WORD Attributes);                // 文字の色をリセットする関数
 
 int main(int argc, char *argv[])
 {
@@ -49,6 +50,7 @@ int main(int argc, char *argv[])
         printf("Load %s\n", argv[1]);
         readDict(argv[1]);
     }
+    printf("起動時に自分で用意した.csvファイルを読み込ませることができます。[main.exe example.csv]\n");
 
 quiz:
     for (i = 0; i < 10; i++) {
@@ -66,7 +68,6 @@ menu:
     switch (choice) {
         case 1:
             resetConsoleColor(Attributes);
-            informTips();
             printf("See you!\n");
             return (0);
         case 2:
@@ -84,39 +85,37 @@ menu:
 }
 
 
-
-
-/****************************************************
+/**********************************************************************
  * void displayWords(void)
  * 内容
  *      wordsの内容 一覧を表示する
- ****************************************************/
+ **********************************************************************/
 void displayWords(void)
 {
-    int i = 0;
+    int i = 1;　// 0は単語ではないため1からスタートする。
 
     if (file_pointer == NULL) {
         printf("まだ.csvが読み込まれていません\n");
     }
 
     while (strlen(words[i].en) != 0) {
-        printf("%s %s", words[i].en, words[i].ja);
+        printf("%-20s %s", words[i].en, words[i].ja);
         Sleep(20);
         i++;
     }
+    printf("\n");
 }
 
 
-/****************************************************
+/**********************************************************************
  *  void readDict(char *input_file)
- * 引数     char* 
- *      入力ファイルのポインタをとる                      
- * 戻り値   void
+ * 引数
+ *      入力ファイルのポインタ
  * 内容
  *      .csvファイルを読み込む。次に.csvの内容を構造体の
  * 配列wordsに格納する。最後に、row_countにレコードの数を
  * 登録する。
- ****************************************************/
+ **********************************************************************/
 void readDict(char *input_file)
 {
     int i = 0;
@@ -126,7 +125,6 @@ void readDict(char *input_file)
     if (file_pointer == NULL) {
         printf("%s does not exist.\n", file_name);
     } else {
-        progressBar();
         printf("File load complete!!\n");
     }
 
@@ -142,39 +140,15 @@ void readDict(char *input_file)
 }
 
 
-
-
-/****************************************************
- *          void progressBar(void)
- * - 引数   void
- * - 戻り値 void
- * 内容
- *      なんちゃってプログレスバーを表示する
- ****************************************************/
-void progressBar(void)
-{
-    Sleep(500);
-    int i = 0;
-    for (i = 0; i < 60; i++) {
-        printf("*");
-        Sleep(10);
-    }
-    printf("\n");
-    Sleep(100);
-}
-
-
-
-
-/****************************************************
+/**********************************************************************
  *          int setQuestions(void)
- * - 引数     なし                                        
- * - 戻り値   int
+ * 戻り値 
  *      出題したquestion_numberの値を返す。 
  * 内容
  *      出題する関数。初めにrand()を用いて、出題する問題
- * の番号をquestion_numberに代入する。次に、一時的な変数answer_string
- ****************************************************/
+ * の番号をquestion_numberに代入する。次に、一時的な変数answer_stringをつく
+ * り、それと入力をstrcmp関数を用いて、正解の判定を行う。
+ **********************************************************************/
 int setQuestions(int number)
 {
     char buff[MAX_VALUE];
@@ -229,7 +203,11 @@ int setQuestions(int number)
     return (question_number);
 }
 
-
+/**********************************************************************
+ * void showResult(void)
+ * 内容
+ *      クイズの結果を表示する。間違えた問題を表示する。
+ **********************************************************************/
 void showResult(void) {
     int i;
     int j = 0; //incorrectsのindex
@@ -260,18 +238,17 @@ void showResult(void) {
     printf("\n\n");
 }
 
-void informTips(void) {
-    int num = rand() % 2;
-    switch (num) {
-        case 0:
-            printf("Tips: ");
-            printf("起動時に自分で用意した.csvファイルを読み込ますことができるよ！[main.exe .csv]\n");
-            break;
-        default:
-            break;
-    }
-}
 
+
+/**********************************************************************
+ * void setConsoleColor(WORD* Attributes, DWORD Color);
+ * void resetConsoleColor(WORD Attributes);
+ * これらの関数は,
+ * how to get background color back to previous color after use of std handle
+ * のAnswer
+ * https://stackoverflow.com/a/25560218
+ * の引用です。(ColourをColorにしています)
+ **********************************************************************/
 void setConsoleColor(WORD* Attributes, DWORD Color)
 {
     CONSOLE_SCREEN_BUFFER_INFO Info;
