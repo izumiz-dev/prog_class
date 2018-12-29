@@ -23,3 +23,4 @@
 * <http://www.orchid.co.jp/computer/cschool/CREF/strcmp.html>
 * <http://www.grapecity.com/developer/support/powernews/column/clang/030/page04.htm>
 * <http://www.orchid.co.jp/computer/cschool/CREF/gets.html>
+* <https://en.cppreference.com/w/cpp/io/c/fprintf>
