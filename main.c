@@ -6,7 +6,6 @@
  * インデント space 4文字
  ****************************************************/
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,24 +13,29 @@
 #include <time.h>
 #define MAX_VALUE 1024
 
-typedef struct Dict
-{
+FILE *file_pointer;
+typedef struct Dict {
     char en[MAX_VALUE];
     char ja[MAX_VALUE];
 } Dict;
 
-Dict words[MAX_VALUE];    // 単語の英語、日本語の構造体の変数
-int row_count;        // 登録単語数
-int history[MAX_VALUE]; // 出題履歴を格納する
+Dict words[MAX_VALUE];      // 単語の英語、日本語の構造体の変数
+
+int row_count;              // 登録単語数
+int histories[MAX_VALUE];   // 出題履歴を格納する
+int results[MAX_VALUE]; 
 
 void displayWords(void);
 void readDict(char *);
 void progressBar(void);
-int setQuestions(void);
+int setQuestions(int);
+void showResult(void);
 
 int main(int argc, char *argv[])
 {
     int i = 0;
+    char buff[MAX_VALUE];
+    int choice;
     srand((unsigned int)time(NULL));
     if (argc == 1) {
         printf("Loading build-in en-ja.csv\n");
@@ -41,8 +45,34 @@ int main(int argc, char *argv[])
         readDict(argv[1]);
     }
 
+quiz:
     for (i = 0; i < 10; i++) {
-        history[i] = setQuestions();
+        histories[i] = setQuestions(i);
+    }
+
+    showResult();
+menu:
+    printf("ゲームをやめる: 1\t");
+    printf("ゲームを続ける: 2\t");
+    printf("問題一覧を表示する: 3\n");
+    printf(" > ");
+    fgets(buff, sizeof(buff), stdin);
+    choice = atoi(buff);
+    switch (choice) {
+        case 1:
+            printf("See you!\n");
+            return (0);
+            break;
+        case 2:
+            goto quiz;
+            break;
+        case 3:
+            displayWords();
+            goto menu;
+            break;
+        default:
+            goto menu;
+            break;
     }
     return (0);
 }
@@ -58,6 +88,11 @@ int main(int argc, char *argv[])
 void displayWords(void)
 {
     int i = 0;
+
+    if (file_pointer == NULL) {
+        printf("まだ.csvが読み込まれていません\n");
+    }
+
     while (strlen(words[i].en) != 0) {
         printf("%s %s", words[i].en, words[i].ja);
         Sleep(20);
@@ -79,7 +114,6 @@ void displayWords(void)
 void readDict(char *input_file)
 {
     int i = 0;
-    FILE *file_pointer;
     char *file_name = input_file;
     file_pointer = fopen(file_name, "r");
 
@@ -135,8 +169,7 @@ void progressBar(void)
  *      出題する関数。初めにrand()を用いて、出題する問題
  * の番号をquestion_numberに代入する。次に、一時的な変数answer_string
  ****************************************************/
-
-int setQuestions(void)
+int setQuestions(int number)
 {
     char buff[MAX_VALUE];
     char answer_string[MAX_VALUE];
@@ -152,15 +185,17 @@ int setQuestions(void)
         answer_string[i] = answer_string[i + 1];
     }
 
-    printf("英語で[ %s ]\n", words[question_number].ja);
-    printf("> ");
+    printf("%d/10問目:   英語で[ %s ]は？\n", number, words[question_number].ja);
+    printf(" > ");
     fgets(buff, sizeof(buff), stdin);
     for (i = 0; i < strlen(buff); i++) {
         if (buff[i] == '\n') {
             buff[i] = '\0';
         }
     }
-    is_correct = strcmp(buff, answer_string);
+
+    is_correct = strcmp(buff, answer_string);   // 正解判定
+    results[number] = is_correct;               // resultsに正解かどうかを格納
 
     if (is_correct == 0) {
         printf("正解!!\n\n");
@@ -169,4 +204,33 @@ int setQuestions(void)
         printf("答えは[ %s ]\n\n", answer_string);
     }
     return (question_number);
+}
+
+
+void showResult(void) {
+    int i;
+    int j = 0; //incorrectsのindex
+    int correct_answer_count = 0;
+    char buff[MAX_VALUE];
+
+    for (i = 0; i < 10; i++) {
+        if (results[i] == 0) {
+            correct_answer_count++;
+        } else {
+            results[i] = -1;    // 不正解を-1とする
+        }
+    }
+
+    printf("スコア　%d / 10 点！\n\n", correct_answer_count);
+
+    // 間違えた問題の一覧を表示する
+    printf("間違えた問題");
+    for (i = 0; i < 10; i++) {
+        if (results[i] == -1) {
+            int temp = histories[i];
+            printf("%-20s %s", words[temp].en, words[temp].ja);
+        }
+    }
+
+    printf("\n\n");
 }
