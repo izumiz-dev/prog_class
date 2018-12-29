@@ -24,3 +24,5 @@
 * <http://www.grapecity.com/developer/support/powernews/column/clang/030/page04.htm>
 * <http://www.orchid.co.jp/computer/cschool/CREF/gets.html>
 * <https://en.cppreference.com/w/cpp/io/c/fprintf>
+* <https://stackoverflow.com/questions/25559077/how-to-get-background-color-back-to-previous-color-after-use-of-std-handle>
+* <http://d.hatena.ne.jp/s-kita/20100924/1285338966>
