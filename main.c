@@ -25,12 +25,17 @@ int row_count;              // 登録単語数
 int histories[MAX_VALUE];   // 出題履歴を格納する
 int results[MAX_VALUE]; 
 
+WORD Attributes = 0;
+
 void displayWords(void);
 void readDict(char *);
 void progressBar(void);
 int setQuestions(int);
 void showResult(void);
 void informTips(void);
+void setConsoleColor(WORD* Attributes, DWORD Color);
+void resetConsoleColor(WORD Attributes);
+
 int main(int argc, char *argv[])
 {
     int i = 0;
@@ -60,6 +65,7 @@ menu:
     choice = atoi(buff);
     switch (choice) {
         case 1:
+            resetConsoleColor(Attributes);
             informTips();
             printf("See you!\n");
             return (0);
@@ -185,7 +191,14 @@ int setQuestions(int number)
         answer_string[i] = answer_string[i + 1];
     }
 
-    printf("%d/10問目:   英語で[ %s ]は？\n", number, words[question_number].ja);
+    setConsoleColor(&Attributes, BACKGROUND_INTENSITY | BACKGROUND_BLUE | FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    printf("%d/10問目", number+1);
+    resetConsoleColor(Attributes);
+    printf("    英語で[ ");
+    setConsoleColor(&Attributes, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN);
+    printf("%s", words[question_number].ja);
+    resetConsoleColor(Attributes);
+    printf(" ]は？\n");
     printf(" > ");
     fgets(buff, sizeof(buff), stdin);
     for (i = 0; i < strlen(buff); i++) {
@@ -198,10 +211,20 @@ int setQuestions(int number)
     results[number] = is_correct;               // resultsに正解かどうかを格納
 
     if (is_correct == 0) {
+        printf("\t\t");
+        setConsoleColor(&Attributes, BACKGROUND_INTENSITY | BACKGROUND_GREEN | FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
         printf("正解!!\n\n");
+        resetConsoleColor(Attributes);
     } else {
-        printf("不正解 ");
-        printf("答えは[ %s ]\n\n", answer_string);
+        printf("\t\t");
+        setConsoleColor(&Attributes, BACKGROUND_INTENSITY | BACKGROUND_RED | FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        printf("不正解");
+        resetConsoleColor(Attributes);
+        printf("\n  答えは[");
+        setConsoleColor(&Attributes, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN);
+        printf(" %s ", answer_string);
+        resetConsoleColor(Attributes);
+        printf("]\n\n");
     }
     return (question_number);
 }
@@ -221,10 +244,12 @@ void showResult(void) {
         }
     }
 
-    printf("スコア　%d / 10 点！\n\n", correct_answer_count);
+    printf("スコア  %d / 10 点！\n\n", correct_answer_count);
 
     // 間違えた問題の一覧を表示する
+    setConsoleColor(&Attributes, BACKGROUND_INTENSITY | BACKGROUND_GREEN | BACKGROUND_RED);
     printf("間違えた問題");
+    resetConsoleColor(Attributes);
     for (i = 0; i < 10; i++) {
         if (results[i] == -1) {
             int temp = histories[i];
@@ -246,3 +271,19 @@ void informTips(void) {
             break;
     }
 }
+
+void setConsoleColor(WORD* Attributes, DWORD Color)
+{
+    CONSOLE_SCREEN_BUFFER_INFO Info;
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    GetConsoleScreenBufferInfo(hStdout, &Info);
+    *Attributes = Info.wAttributes;
+    SetConsoleTextAttribute(hStdout, Color);
+}
+
+void resetConsoleColor(WORD Attributes)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Attributes);
+}
+
+
